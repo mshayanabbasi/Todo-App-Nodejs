@@ -1,9 +1,8 @@
-const express = require("express");
-require("./api/db/mongoose");
+const http = require("http");
+const app = require("./app");
 
-const app = express();
 const port = 3000;
 
-app.listen(port, () => {
-  console.log("Todo Server is up on port " + port);
-});
+const server = http.createServer(app);
+
+server.listen(port);
