@@ -8,51 +8,90 @@ exports.add_todo = async (req, res) => {
       ...req.body,
     });
     await todo.save();
-    res.status(201).send(todo);
-    // console.log(todo);
+    res.status(201).json({
+      todo,
+    });
   } catch (e) {
-    console.log(e);
-    res.status(500).send(e);
+    res.status(500).json({
+      error: e,
+    });
   }
 };
 
 exports.get_all_todo = async (req, res) => {
   try {
     const todos = await Todo.find();
-    console.log(todos);
-    res.status(200).send(todos);
+    res.status(200).json({
+      todos,
+    });
   } catch (e) {
-    res.status(400).send(e);
+    res.status(500).json({
+      error: e,
+    });
   }
 };
 
 exports.get_one_todo = async (req, res) => {
-  const id = req.params.id;
+  const id = req.params.todoId;
   try {
     const todo = await Todo.findById(id);
-    console.log(todo);
     if (todo) {
-      return res.status(200).json(todo);
+      res.status(200).json({
+        todo,
+      });
     } else {
-      return res.status(404).json({
+      res.status(404).json({
         message: "No valid entry found for provided ID",
       });
     }
   } catch (e) {
-    res.status(404).send(e);
+    res.status(500).json({
+      error: e,
+    });
   }
 };
 
-exports.update_todo = async (req, res) => {};
+exports.update_todo = async (req, res) => {
+  const id = req.params.todoId;
+  try {
+    const todo = await Todo.findOne({ _id: id });
+    todo.completed = true;
+    await todo.save();
+    // console.log(todo);
+    if (todo) {
+      res.status(201).json({
+        message: "Update Successfully",
+        todo,
+      });
+    }
+    // } else {
+    //   res.status(404).json({
+    //     message: "Not update entry",
+    //   });
+    // }
+  } catch (e) {
+    res.status(500).json({
+      error: e,
+    });
+  }
+};
 
 exports.delete_todo = async (req, res) => {
+  const id = req.params.todoId;
   try {
-    const todo = await Todo.findByIdAndDelete(req.params.id);
-    if (!todo) {
-      res.status(400).send();
+    const todo = await Todo.remove({ _id: id });
+    if (todo) {
+      res.status(204).json({
+        message: "Deleted Successfully",
+      });
+    } else {
+      res.status(400).json({
+        message: "No entries found",
+      });
     }
-    res.send(todo);
   } catch (e) {
-    res.status(400).send(e);
+    res.status(500).json({
+      error: e,
+    });
   }
 };
