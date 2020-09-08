@@ -57,18 +57,11 @@ exports.update_todo = async (req, res) => {
     const todo = await Todo.findOne({ _id: id });
     todo.completed = true;
     await todo.save();
-    // console.log(todo);
     if (todo) {
       res.status(201).json({
-        message: "Update Successfully",
         todo,
       });
     }
-    // } else {
-    //   res.status(404).json({
-    //     message: "Not update entry",
-    //   });
-    // }
   } catch (e) {
     res.status(500).json({
       error: e,
