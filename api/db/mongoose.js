@@ -1,11 +1,7 @@
 const mongoose = require("mongoose");
 
-const DATABASE_NAME = "todos";
-
 mongoose.connect(
-  "mongodb+srv://admin:Chosmeenow2018@cluster0.1puf8.mongodb.net/" +
-    DATABASE_NAME +
-    "?retryWrites=true&w=majority",
+  "mongodb+srv://admin:Chosemenow2018@cluster0.1puf8.mongodb.net/todos?retryWrites=true&w=majority",
   {
     useNewUrlParser: true,
     useCreateIndex: true,
