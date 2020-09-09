@@ -55,7 +55,7 @@ exports.update_todo = async (req, res) => {
   const id = req.params.todoId;
   try {
     const todo = await Todo.findOne({ _id: id });
-    todo.completed = true;
+    todo.completed = !todo.completed;
     await todo.save();
     if (todo) {
       res.status(201).json({
